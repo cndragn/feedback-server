@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 const cookieSession = require('cookie-session');
 const passport = require('passport');
 const keys = require('./config/keys');
+const bodyParser = require('body-parser');
+
 require('./models/User'); // require models before passport
 require('./models/Survey');
 require('./services/passport');
@@ -10,6 +12,8 @@ require('./services/passport');
 mongoose.connect(keys.mongoURI, { useNewUrlParser: true });
 
 const app = express();
+
+app.use(bodyParser.json());
 
 //tell express to make use of cookies
 app.use(
