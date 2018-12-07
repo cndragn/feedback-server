@@ -7,7 +7,7 @@ const Survey = mongoose.model('surveys');
 
 module.exports = (app) => {
 	//check that user is logged in if they go to this link
-	app.post('/api/surveys', requireLogin, (req, res) => {
+	app.post('/api/surveys', requireLogin, async (req, res) => {
 		//access properties out of req body
 		const { title, subject, body, recipients } = req.body;
 
@@ -25,6 +25,20 @@ module.exports = (app) => {
 
 		// send email
 		const mailer = new Mailer(survey, surveyTemplate(survey));
-		mailer.send();
+
+		try {
+			await mailer.send();
+
+			// save survey to the database
+			await survey.save();
+
+			// save user
+			const user = await req.user.save();
+
+			//send back updated user model
+			res.send(user);
+		} catch (err) {
+			res.status(422).send(err);
+		}
 	});
 };
