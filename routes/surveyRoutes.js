@@ -6,6 +6,11 @@ const surveyTemplate = require('../services/emailTemplates/surveyTemplate');
 const Survey = mongoose.model('surveys');
 
 module.exports = (app) => {
+	// redirect user after sending feedback
+	app.get('/api/surveys/thanks', (req, res) => {
+		res.send('Thanks for voting!');
+	});
+
 	//check that user is logged in if they go to this link
 	app.post('/api/surveys', requireLogin, async (req, res) => {
 		//access properties out of req body
