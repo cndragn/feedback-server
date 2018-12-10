@@ -11,6 +11,11 @@ module.exports = (app) => {
 		res.send('Thanks for voting!');
 	});
 
+	app.post('/api/surveys/webhooks', (req, res) => {
+		console.log(req.body);
+		res.send({});
+	});
+
 	//check that user is logged in if they go to this link
 	app.post('/api/surveys', requireLogin, async (req, res) => {
 		//access properties out of req body
