@@ -26,7 +26,12 @@ module.exports = (app) => {
 		});
 		//remove undefined elements
 		const compactEvents = _.compact(events);
-		console.log(events);
+		//remove duplicate elements
+		const uniqueElements = _.uniqBy(compactEvents, 'email', 'surveyId');
+
+		console.log(uniqueElements);
+
+		res.send({});
 	});
 
 	//check that user is logged in if they go to this link
