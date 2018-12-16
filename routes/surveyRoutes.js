@@ -24,6 +24,8 @@ module.exports = (app) => {
 				return { email, surveyId: match.surveyId, choice: match.choice };
 			}
 		});
+		//remove undefined elements
+		const compactEvents = _.compact(events);
 		console.log(events);
 	});
 
