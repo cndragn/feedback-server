@@ -9,6 +9,14 @@ const surveyTemplate = require('../services/emailTemplates/surveyTemplate');
 const Survey = mongoose.model('surveys');
 
 module.exports = (app) => {
+	//produce list of surveys
+	app.get('/api/surveys', requireLogin, async (req, res) => {
+		//query for surveys by current user
+		const surveys = await Survey.find({ _user: req.user.id });
+
+		res.send(surveys);
+	});
+
 	// redirect user after sending feedback
 	app.get('/api/surveys/:surveyId/:choice', (req, res) => {
 		res.send('Thanks for voting!');
