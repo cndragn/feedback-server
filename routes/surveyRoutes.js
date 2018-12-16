@@ -16,7 +16,7 @@ module.exports = (app) => {
 
 	app.post('/api/surveys/webhooks', (req, res) => {
 		const p = new Path('/api/surveys/:surveyId/:choice');
-		const events = _.chain(req.body)
+		_.chain(req.body)
 			.map(({ email, url }) => {
 				//only return if surveyid and choice exists
 				const match = p.test(new URL(url).pathname);
@@ -28,9 +28,29 @@ module.exports = (app) => {
 			.compact()
 			//remove duplicate elements
 			.uniqBy('email', 'surveyId')
+			.each(({ surveyId, email, choice }) => {
+				// find and update query executed entirely on MongoDB
+				Survey.updateOne(
+					{
+						//mongo uses _id not id
+						//mongoose does this automatically, but
+						//when passing off to mongo, must use this
+						_id: surveyId,
+						recipients: {
+							$elemMatch: { email: email, responded: false }
+						}
+					},
+					{
+						// increase count of given choice by 1
+						// [choice] is key interpolation
+						$inc: { [choice]: 1 },
+						// update property
+						// $ is the elemMatch
+						$set: { 'recipients.$.responded': true }
+					}
+				).exec(); // to execute query
+			})
 			.value();
-
-		console.log(events);
 
 		res.send({});
 	});
