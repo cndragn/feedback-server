@@ -10,7 +10,7 @@ const Survey = mongoose.model('surveys');
 
 module.exports = (app) => {
 	// redirect user after sending feedback
-	app.get('/api/surveys/thanks', (req, res) => {
+	app.get('/api/surveys/:surveyId/:choice', (req, res) => {
 		res.send('Thanks for voting!');
 	});
 
@@ -46,7 +46,9 @@ module.exports = (app) => {
 						$inc: { [choice]: 1 },
 						// update property
 						// $ is the elemMatch
-						$set: { 'recipients.$.responded': true }
+						$set: { 'recipients.$.responded': true },
+						//update last responded date
+						lastResponded: new Date()
 					}
 				).exec(); // to execute query
 			})
