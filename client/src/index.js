@@ -6,6 +6,7 @@ import reduxThunk from 'redux-thunk';
 
 import App from './components/App';
 import reducers from './reducers';
+import './style.css';
 
 //dev helpers for testing
 import axios from 'axios';
