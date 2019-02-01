@@ -11,6 +11,9 @@ const Landing = () => {
 					<p>We know you value your customers.</p>
 					<p>Let their voices be heard!</p>
 					<p>Collect feedback and take the guesswork out of how to provide the best service possible.</p>
+					<a href="/auth/google" className="waves-effect waves-light red btn">
+						Log In Now
+					</a>
 				</div>
 			</div>
 			<div className="below-fold grey lighten-2">
